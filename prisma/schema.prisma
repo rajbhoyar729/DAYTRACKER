@@ -6,13 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma" // Prevents compatibility issues with Neon
 }
 
 model User {
@@ -22,7 +20,7 @@ model User {
   subscriptionEnds  DateTime?
   todos             Todo[]
 
-  @@index([id]) // Adds an index to improve relational queries (optional, as `@id` may already index)
+
 }
 
 model Todo {
@@ -30,10 +28,9 @@ model Todo {
   title     String
   completed Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
-  userId    String    // Adds an index for better performance on queries filtering by `userId`
+  userId    String    
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
 
-  @@index([userId]) // Adds an index for faster lookups and joins involving `userId
 }
