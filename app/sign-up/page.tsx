@@ -1,3 +1,4 @@
+'use client'
 import { useSignUp } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -23,14 +24,14 @@ function Signup(){
   const [pendingVerification,setPendingVerfication] = useState(false)
   const [code, setCode] = useState("")
   const [error, setError] = useState("")
-  const [showPassword,setShowPassword]=useState("")
+  const [showPassword ,setShowPassword] =useState(false)
 
   const router = useRouter()
 
   if(!isLoaded){
     return null;
   }
-  async function submit(e: React.FocusEvent){
+  async function submit(e: React.FormEvent){
     e.preventDefault()
     if(!isLoaded){
         return;
@@ -66,7 +67,7 @@ function Signup(){
 
      }
 
-     if(completeSignup.status == "complete"){
+     if(completeSignup.status === "complete"){
         await setActive( {session:completeSignup.createdSessionId})
         router.push("/dashboard")
 
@@ -85,9 +86,10 @@ function Signup(){
     <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle className="text-xl font-bold text-center">
             Sign Up for Todo Master
           </CardTitle>
+          
         </CardHeader>
         <CardContent>
           {!pendingVerification ? (
